@@ -17,11 +17,11 @@ class GroundedPromptSet:
         return self.retriever(self.storage, n)
 
 class GroundedPrompt:
-    def __init__(self, prompt, id=None, prompt_embeddings=None):
+    def __init__(self, prompt, scores=[], id=None, prompt_embeddings=None):
         self.prompt = prompt
         self.id = id or uuid.uuid4()
         self.prompt_embeddings = prompt_embeddings
-        self.scores = []
+        self.scores = scores
     
     def add_score(self, score):
         self.scores.append(score)
