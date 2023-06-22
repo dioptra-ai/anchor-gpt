@@ -1,41 +1,18 @@
 __version__ = '0.0.1'
 
-import uuid
+from .prompt_store import PromptStore
+from .prompt import Prompt
 
-class GroundedPromptSet:
-    def __init__(self, retriever, storage):
+class PromptLogger:
+    def __init__(self, retriever, store=None):
         self.retriever = retriever
-        self.storage = storage
+        self.store = store or PromptStore()
     
-    def add(self, prompt):
-        return self.storage.add(prompt)
+    def log(self, prompt):
+        return self.store.add(prompt)
     
     def get_by_id(self, id):
-        return self.storage.get_by_id(id)
+        return self.store.get_by_id(id)
 
     def retrieve_n(self, n):
-        return self.retriever(self.storage, n)
-
-class GroundedPrompt:
-    def __init__(self, prompt, scores=[], id=None, prompt_embeddings=None):
-        self.prompt = prompt
-        self.id = id or uuid.uuid4()
-        self.prompt_embeddings = prompt_embeddings
-        self.scores = scores
-    
-    def add_score(self, score):
-        self.scores.append(score)
-    
-    def __repr__(self):
-        return f'GroundedPrompt(prompt={self.prompt}, id={self.id}, prompt_embeddings={self.prompt_embeddings}, scores={self.scores})'
-
-class BaseGroundedPromptStorage:
-    def __init__(self):
-        self.prompts = {}
-    
-    def add(self, prompt):
-        self.prompts[prompt.id] = prompt
-        return prompt
-    
-    def get_by_id(self, id):
-        return self.prompts[id]
+        return self.retriever(self.store, n)
