@@ -68,7 +68,7 @@ class kCenterGreedy():
 
     n_obs = len(self.X)
 
-    for _ in tqdm(range(N), desc='running k greedy center'):
+    for _ in tqdm(range(N), desc='calculating coreset...'):
       if self.min_distances is None:
         # Initialize centers with a randomly selected datapoint
         ind = np.random.choice(np.arange(n_obs))
@@ -92,19 +92,28 @@ def coreset(vector_ids, already_selected, number_of_datapoints, transformer, dis
     batch_shapes = {}
     for batch_start in range(0, len(vector_ids), BATCH_SIZE):
       features_batch = transformer(vector_ids[batch_start:batch_start + BATCH_SIZE])
+      try:
+        first_none_vector_idx = features_batch.index(None)
+        raise ValueError(f'Cannot use None embeddings for id {vector_ids[first_none_vector_idx + batch_start]} to calculate coreset')
+      except ValueError:
+        pass
+
       features_batch = [np.array(f, dtype='float16') for f in features_batch]
       for index, uuid in enumerate(vector_ids[batch_start:batch_start + BATCH_SIZE]):
         vector_shape = features_batch[index].shape
         fp = np.memmap(os.path.join(tmpdirname, str(uuid)), dtype='float16', mode='w+', shape=features_batch[index].shape)
         fp[:] = features_batch[index][:]
         fp.flush()
-      np_features_batch = np.stack(features_batch, axis=0)
+      try:
+        np_features_batch = np.stack(features_batch, axis=0)
+      except ValueError as e:
+        raise ValueError(f'Cannot use provided embeddings to calculate coreset: {e}') from e
+ 
       bfp = np.memmap(
         os.path.join(tmpdirname, str(batch_start)), dtype='float16', mode='w+', shape=np_features_batch.shape)
       bfp[:] = np_features_batch[:]
       bfp.flush()
       batch_shapes[batch_start] = np_features_batch.shape
-    print(f'{datetime.now() - tic}s done')
 
     X = np.array(vector_ids)
 

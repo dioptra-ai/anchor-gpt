@@ -17,29 +17,30 @@ def db_to_prompt(db_prompt):
         embeddings=json.loads(db_prompt['embeddings']) if db_prompt['embeddings'] else None
     )
 
-class PromptStore:
+class SQLitePromptStore:
     def __init__(self, name="anchor.db"):
         self.name = name
-        self.con = sqlite3.connect(name)
-        self.con.row_factory = sqlite3.Row
-        self.con.execute("CREATE TABLE IF NOT EXISTS prompts (id UUID, text TEXT, scores JSON, embeddings JSON)")
+        self.connection = sqlite3.connect(name)
+        # self.connection.set_trace_callback(print)
+        self.connection.row_factory = sqlite3.Row
+        self.connection.execute("CREATE TABLE IF NOT EXISTS prompts (id UUID, text TEXT, scores JSON, embeddings JSON)")
 
     def add(self, prompt):
-        self.con.execute("INSERT INTO prompts VALUES (?, ?, ?, ?)", prompt_to_db(prompt))
-        self.con.commit()
+        self.connection.execute("INSERT INTO prompts VALUES (?, ?, ?, ?)", prompt_to_db(prompt))
+        self.connection.commit()
         return prompt
 
     def update(self, prompt):
         (id, text, scores, embeddings) = prompt_to_db(prompt)
-        self.con.execute("UPDATE prompts SET text=?, scores=?, embeddings=? WHERE id=?", (text, scores, embeddings, id))
-        self.con.commit()
+        self.connection.execute("UPDATE prompts SET text=?, scores=?, embeddings=? WHERE id=?", (text, scores, embeddings, id))
+        self.connection.commit()
         return prompt
     
     def get_by_ids(self, ids):
-        result = self.con.execute(f"SELECT * FROM prompts WHERE id IN ({','.join(['?'] * len(ids))})", ids).fetchall()
+        result = self.connection.execute(f"SELECT * FROM prompts WHERE id IN ({','.join(['?'] * len(ids))})", ids).fetchall()
 
         return [db_to_prompt(row) for row in result]
 
     def select_prompts(self, fields='text, id, scores, embeddings', where='1=1', order_by='id', limit='-1'):
 
-        return [db_to_prompt(row) for row in self.con.execute(f"SELECT {fields} FROM prompts WHERE {where} ORDER BY {order_by} LIMIT {limit}")]
+        return [db_to_prompt(row) for row in self.connection.execute(f"SELECT {fields} FROM prompts WHERE {where} ORDER BY {order_by} LIMIT {limit}")]

@@ -1,18 +1,15 @@
-from .prompt_store import PromptStore
+from .prompt_store import SQLitePromptStore
 from .coreset import coreset
 
 class PromptLogger:
     def __init__(self, retriever, store=None):
         self.retriever = retriever
-        self.store = store or PromptStore()
+        self.store = store or SQLitePromptStore()
     
     def log(self, prompt):
         prompt._set_store(self.store)
 
         return self.store.add(prompt)
-    
-    def get_by_ids(self, ids):
-        return self.store.get_by_ids(ids)
 
     def retrieve_n(self, n):
         return self.retriever(self.store, n)
