@@ -22,13 +22,13 @@ jobs:
           command: |
             pip install twine && twine upload dist/*
 
-# workflows:
-#   build_and_deploy:
-#     jobs:
-#       - build_and_deploy:
-#           context:
-#             - pypi-creds
-#           filters:
-#             branches:
-#               only:
-#                 - main
+workflows:
+  build_and_deploy:
+    jobs:
+      - build_and_deploy:
+          context:
+            - pypi-creds
+          filters:
+            branches:
+              only:
+                - main

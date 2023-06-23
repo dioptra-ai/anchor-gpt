@@ -23,15 +23,15 @@ if sys.version_info < (3, 5, 3):
 long_description = read('README.md')
 requirements = read('requirements.txt').splitlines()
 
-__version__ = get_version('anchor/__init__.py')
+__version__ = get_version('anchor_gpt/__init__.py')
 
 setup(
-    name='dioptra-anchor',
+    name='anchor-gpt',
     version=__version__,
-    description='Client library to log data to Dioptra API',
+    description='Diagnose and find hallucinations in your grounded Large Language Model prompts with Anchor-GPT!',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/dioptra-ai/anchor',
+    url='https://github.com/dioptra-ai/anchor-gpt',
     project_urls={
         'dioptra.ai': 'https://www.dioptra.ai',
     },
@@ -47,7 +47,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    keywords='dioptra',
+    keywords='dioptra, anchor, gpt, hallucinations, grounding, llm',
     packages=find_packages(exclude=['docs', 'tests*', 'examples']),
     include_package_data=True,
     install_requires=requirements

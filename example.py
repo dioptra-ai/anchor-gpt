@@ -1,6 +1,6 @@
 import random
 
-from anchor import PromptLogger, Prompt
+from anchor_gpt import PromptLogger, Prompt
 
 # Define a retriever function. The retriever function takes a store and a number n and returns
 #  a list of prompts. In this case, we sort the prompts by their average score and return the top n.

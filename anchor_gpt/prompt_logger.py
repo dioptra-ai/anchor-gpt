@@ -4,7 +4,7 @@ from .coreset import coreset
 class PromptLogger:
     def __init__(self, retriever, store=None):
         '''
-        retriever: a function that takes a store and a number n and returns a list of prompts.
+        retriever: a function that takes a PromptStore and a number and returns a list of prompts. See the example.py file for an example.
         store: a PromptStore object. If None, a SQLitePromptStore will be used.
         '''
         self.retriever = retriever
