@@ -8,7 +8,7 @@ def retriever(store, n):
     def prompt_average_score(prompt):
         return sum(prompt.scores) / len(prompt.scores)
 
-    return sorted(store.get_all_prompts(), key=prompt_average_score, reverse=True)[:n]
+    return sorted(store.select_prompts(), key=prompt_average_score, reverse=True)[:n]
 
 prompt_logger = PromptLogger(retriever)
 
@@ -22,18 +22,25 @@ prompt4 = prompt_logger.log(Prompt('What is the meaning of life 4?', scores=[ran
 prompt1.add_score(random.random())
 prompt1.add_score(random.random())
 prompt1.add_score(random.random())
+prompt1.set_embeddings([random.random() for _ in range(768)])
 
 prompt2.add_score(random.random())
 prompt2.add_score(random.random())
 prompt2.add_score(random.random())
+prompt2.set_embeddings([random.random() for _ in range(768)])
 
 prompt3.add_score(random.random())
 prompt3.add_score(random.random())
 prompt3.add_score(random.random())
+prompt3.set_embeddings([random.random() for _ in range(768)])
 
 prompt4.add_score(random.random())
 prompt4.add_score(random.random())
 prompt4.add_score(random.random())
 prompt4.add_score(random.random())
+prompt4.set_embeddings([random.random() for _ in range(768)])
 
-print(prompt_logger.retrieve_n(2))
+top_prompts = prompt_logger.retrieve_n(12)
+prompts_coreset = prompt_logger.get_prompts_coreset(top_prompts, 2)
+
+print(prompts_coreset)

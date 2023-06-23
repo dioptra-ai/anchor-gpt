@@ -28,12 +28,18 @@ class PromptStore:
         self.con.execute("INSERT INTO prompts VALUES (?, ?, ?, ?)", prompt_to_db(prompt))
         self.con.commit()
         return prompt
+
+    def update(self, prompt):
+        (id, text, scores, embeddings) = prompt_to_db(prompt)
+        self.con.execute("UPDATE prompts SET text=?, scores=?, embeddings=? WHERE id=?", (text, scores, embeddings, id))
+        self.con.commit()
+        return prompt
     
-    def get_by_id(self, id):
-        result = self.con.execute("SELECT text, id, scores, embeddings FROM prompts WHERE id=?", (id,)).fetchone()
+    def get_by_ids(self, ids):
+        result = self.con.execute(f"SELECT * FROM prompts WHERE id IN ({','.join(['?'] * len(ids))})", ids).fetchall()
 
-        return db_to_prompt(result) if result else None
+        return [db_to_prompt(row) for row in result]
 
-    def get_all_prompts(self):
+    def select_prompts(self, fields='text, id, scores, embeddings', where='1=1', order_by='id', limit='-1'):
 
-        return [db_to_prompt(row) for row in self.con.execute("SELECT text, id, scores, embeddings FROM prompts").fetchall()]
+        return [db_to_prompt(row) for row in self.con.execute(f"SELECT {fields} FROM prompts WHERE {where} ORDER BY {order_by} LIMIT {limit}")]

@@ -7,11 +7,16 @@ class Prompt:
         self.embeddings = embeddings
         self.scores = scores
     
+    def _set_store(self, store):
+        self.store = store
+    
     def add_score(self, score):
         self.scores.append(score)
+        self.store.update(self)
     
     def set_embeddings(self, embeddings):
         self.embeddings = embeddings
+        self.store.update(self)
 
     def __repr__(self):
         return f'Prompt(text={self.text}, id={self.id}, len(embeddings)={len(self.embeddings) if self.embeddings else None}, scores={self.scores})'
