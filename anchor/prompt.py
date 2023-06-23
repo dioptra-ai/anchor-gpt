@@ -1,4 +1,5 @@
 import uuid
+import numpy as np
 
 class Prompt:
     def __init__(self, text, scores=[], id=None, embeddings=None):
@@ -19,4 +20,4 @@ class Prompt:
         self.store.update(self)
 
     def __repr__(self):
-        return f'Prompt(text={self.text}, id={self.id}, len(embeddings)={len(self.embeddings) if self.embeddings else None}, scores={self.scores})'
+        return f'Prompt(text={self.text}, id={self.id}, shape(embeddings)={np.shape(self.embeddings) if self.embeddings else None}, scores={self.scores})'
