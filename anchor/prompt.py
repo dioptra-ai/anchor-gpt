@@ -12,10 +12,18 @@ class Prompt:
         self.store = store
     
     def add_score(self, score):
+        '''
+        Add a score to the prompt.
+        score: any. Will be passed in the prompts to the PromptLogger retriever function to allow custom scoring.
+        '''
         self.scores.append(score)
         self.store.update(self)
     
     def set_embeddings(self, embeddings):
+        '''
+        Set the embeddings of the prompt.
+        embeddings: a list of floats.
+        '''
         self.embeddings = embeddings
         self.store.update(self)
 

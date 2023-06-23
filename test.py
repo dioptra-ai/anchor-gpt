@@ -2,8 +2,8 @@ import random
 
 from anchor import PromptLogger, Prompt
 
-# This is implemented by the user because it depends on the store's API and the arbitrary shape of the scores passed to prompt.add_score().
-# In this example it's an in-memory store that only gives us a list of values, the scores are floats, and we choose to average them.
+# Define a retriever function. The retriever function takes a store and a number n and returns
+#  a list of prompts. In this case, we sort the prompts by their average score and return the top n.
 def retriever(store, n):
     def prompt_average_score(prompt):
         return sum(prompt.scores) / len(prompt.scores)

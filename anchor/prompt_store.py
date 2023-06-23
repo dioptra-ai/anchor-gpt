@@ -6,6 +6,29 @@ sqlite3.register_adapter(uuid.UUID, lambda u: u.bytes_le)
 
 from .prompt import Prompt
 
+class PromptStore:
+    def add(self, prompt):
+        '''
+        Add a prompt to the store.
+        prompt: a Prompt object.
+        '''
+        raise NotImplementedError
+    
+    def update(self, prompt):
+        '''
+        Update a prompt in the store.
+        prompt: a Prompt object.
+        '''
+        raise NotImplementedError
+    
+    def get_by_ids(self, ids):
+        '''
+        Get a list of prompts by their ids.
+        ids: a list of UUIDs.
+        '''
+        raise NotImplementedError
+    
+
 def prompt_to_db(prompt):
     return (prompt.id, prompt.text, str(prompt.scores) if prompt.scores else None, str(prompt.embeddings) if prompt.embeddings else None)
 
@@ -17,7 +40,10 @@ def db_to_prompt(db_prompt):
         embeddings=json.loads(db_prompt['embeddings']) if db_prompt['embeddings'] else None
     )
 
-class SQLitePromptStore:
+class SQLitePromptStore(PromptStore):
+    '''
+    A prompt store that uses SQLite as a backend.
+    '''
     def __init__(self, name="anchor.db"):
         self.name = name
         self.connection = sqlite3.connect(name)
