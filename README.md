@@ -60,7 +60,7 @@ my_prompt = prompt_logger.log(Prompt(
 
 2. Add additional scores like user feedback asynchronously
 ```python
-my_prompt.add_score({'user_feedback': 0.8})
+my_prompt.update_scores({'user_feedback': 0.8})
 ```
 
 3. Retreive the worst performing prompts to fine-tune your model or improve your grounding database

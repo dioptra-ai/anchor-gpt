@@ -12,12 +12,12 @@ class Prompt:
     def _set_store(self, store):
         self.store = store
 
-    def add_score(self, score):
+    def update_scores(self, score):
         """
         Add a score to the prompt.
 
         Parameters:
-            score: any. Will be passed in the prompts to the PromptLogger retriever function to allow custom scoring.
+            score: a dict. Will be passed in the prompts to the PromptLogger retriever function to allow custom scoring.
         """
         self.scores.update(score)
         self.store.update(self)

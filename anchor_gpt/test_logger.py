@@ -28,12 +28,12 @@ def test_update():
         embeddings=[0.1, 0.2, 0.3],
     ))
 
-    my_prompt.add_score({'user_feedback': 0.5})
+    my_prompt.update_scores({'user_feedback': 0.5})
 
     retreived_prompt = prompt_logger.store.get_by_ids([my_prompt.id])[0]
     assert retreived_prompt.scores == {'grounding_distances': [0.1, 0.2, 0.3], 'user_feedback': 0.5}
 
-    my_prompt.add_score({'user_feedback': 0.6})
+    my_prompt.update_scores({'user_feedback': 0.6})
     retreived_prompt = prompt_logger.store.get_by_ids([my_prompt.id])[0]
     assert retreived_prompt.scores == {'grounding_distances': [0.1, 0.2, 0.3], 'user_feedback': 0.6}
 
