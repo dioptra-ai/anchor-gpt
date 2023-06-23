@@ -1,6 +1,22 @@
-# Anchor-gpt
+<p align="center">
+    <b>Find hallucination prone prompts and use them to fine-tune / ground your LLM</b>
+</p>
 
-Find the worst hallucination prone prompts and use them to fine-tune / ground your LLM with Anchor-GPT
+<p align="center">
+    <img src='https://img.shields.io/pypi/pyversions/anchor-gpt'</img>
+    <a href="https://pypi.org/project/anchor-gpt/"><img alt="PyPI" src="https://img.shields.io/pypi/v/anchor-gpt"></a>
+    <img src='https://img.shields.io/github/license/dioptra-ai/anchor-gpt'></img></a>
+</p>
+
+
+## Why Anchor GPT ?
+
+Because you can't get groundtruth answers for every prompt and fine-tuning / grounding with the right data gives much better results. We compared side by side fine-tuning with prompts sampled randomly and with CoreSet (the core algo of anchor-gpt) and the results speak for themselves 👇
+<p align="center">
+    <img src="./img/accuracy_results.png" width="400"/>
+    <br>
+    <i>Accuracy on a sample of the MMLU test dataset of a fine tuned LLama with 1000 datapoints sampled from the Alpaca dataset using either Random sampling or CoreSet</i>
+</p>
 
 ## Installation
 
