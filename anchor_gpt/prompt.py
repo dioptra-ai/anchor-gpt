@@ -19,7 +19,7 @@ class Prompt:
         Parameters:
             score: any. Will be passed in the prompts to the PromptLogger retriever function to allow custom scoring.
         """
-        self.scores.extent(score)
+        self.scores.update(score)
         self.store.update(self)
 
     def set_embeddings(self, embeddings):
