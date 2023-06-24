@@ -118,7 +118,7 @@ def hallucinations():
             return list(filter(lambda x: prompt_average_score(x) > threshold, store.select_prompts()))
 
     # Retrieve a list of the prompts with the greated distance from your grounding data
-    worst_prompts = prompt_logger.retrieve_n(0.5)
+    worst_prompts = prompt_logger.retrieve(retriever, 0.5)
 
     # Remove near duplicates and only keep 10 prompts
     deduped_prompts = prompt_logger.deduplicate(worst_prompts, 10)
