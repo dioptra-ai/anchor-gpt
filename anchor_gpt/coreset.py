@@ -1,12 +1,22 @@
+###
+# Implementation of the Coreset Algirithm
 # Heavily inspired by https://github.com/google/active-learning
+###
+
+
 import os
 from datetime import datetime
 import numpy as np
 from tqdm import tqdm
+import random
 
 import tempfile
 
+random.seed(1234)
+np.random.seed(1234)
+
 try:
+    # Using cuML to GPU enable coreset, otherwise use sklearn
     from cuml.metrics.pairwise_distances import pairwise_distances
 except Exception as e:
     from sklearn.metrics import pairwise_distances
@@ -64,8 +74,6 @@ class kCenterGreedy():
 
     new_batch = []
 
-    np.random.seed(1234)
-
     n_obs = len(self.X)
 
     for _ in tqdm(range(N), desc='calculating coreset...'):
@@ -87,7 +95,6 @@ class kCenterGreedy():
 
 def coreset(vector_ids, already_selected, number_of_datapoints, transformer, distance='euclidean'):
 
-  tic = datetime.now()
   with tempfile.TemporaryDirectory() as tmpdirname:
     batch_shapes = {}
     for batch_start in range(0, len(vector_ids), BATCH_SIZE):
@@ -108,7 +115,7 @@ def coreset(vector_ids, already_selected, number_of_datapoints, transformer, dis
         np_features_batch = np.stack(features_batch, axis=0)
       except ValueError as e:
         raise ValueError(f'Cannot use provided embeddings to calculate coreset: {e}') from e
- 
+
       bfp = np.memmap(
         os.path.join(tmpdirname, str(batch_start)), dtype='float16', mode='w+', shape=np_features_batch.shape)
       bfp[:] = np_features_batch[:]
