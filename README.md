@@ -20,7 +20,7 @@
 
 Because:
 1. LLM hallucinates and you need grounding / fine tuning to fix that.
-2. You can't get groundtruth every prompt you get so you need to find the ones that will give you the most bang for the buck.
+2. You can't groundtruth every prompt you get so you need to find the ones that will give you the most bang for the buck.
 
 We compared side by side fine-tuning with prompts sampled randomly and with CoreSet (the core algo of anchor-gpt) and the results speak for themselves 👇
 <p align="center">
