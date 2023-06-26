@@ -1,4 +1,11 @@
 <p align="center">
+    <img src="./img/anchor_logo.png" width="400"/>
+    <br>
+    <i>Generated with DallE. That's when you know you need to ground LLMs</i>
+</p>
+
+
+<p align="center">
     <b>Find hallucination prone prompts and use them to fine-tune / ground your LLM</b>
 </p>
 
@@ -11,12 +18,21 @@
 
 ## Why Anchor GPT ?
 
-Because you can't get groundtruth answers for every prompt and fine-tuning / grounding with the right data gives much better results. We compared side by side fine-tuning with prompts sampled randomly and with CoreSet (the core algo of anchor-gpt) and the results speak for themselves 👇
+Because:
+1. LLM hallucinates and you need grounding / fine tuning to fix that.
+2. You can't get groundtruth every prompt you get so you need to find the ones that will give you the most bang for the buck.
+
+We compared side by side fine-tuning with prompts sampled randomly and with CoreSet (the core algo of anchor-gpt) and the results speak for themselves 👇
 <p align="center">
     <img src="./img/accuracy_results.png" width="400"/>
     <br>
     <i>Accuracy on a sample of the MMLU test dataset of a fine tuned LLama with 1000 datapoints sampled from the Alpaca dataset using either Random sampling or CoreSet</i>
 </p>
+
+## The idea
+1. Detect hallucination prone prompts using the distance between the prompt and the grounding data, user feedback and model confidence
+2. Sample the prompts that will provide the most coverage using CoreSet algorithm
+3. Find the response to those prompts and add them to your grounding data / fine-tuning dataset
 
 ## Installation
 
