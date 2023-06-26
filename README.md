@@ -22,11 +22,11 @@ Because:
 1. LLM hallucinates and you need grounding / fine tuning to fix that.
 2. You can't groundtruth every prompt you get so you need to find the ones that will give you the most bang for the buck.
 
-We compared side by side fine-tuning with prompts sampled randomly and with CoreSet (the core algo of anchor-gpt) and the results speak for themselves 👇
+We compared side by side fine-tuning with prompts sampled randomly and with CoreSet (the core algo of anchor-gpt) and the results speak for themselves 👇 (For context MMLU SOTA accuracy ranges between 25% and 54%)
 <p align="center">
     <img src="./img/accuracy_results.png" width="400"/>
     <br>
-    <i>Accuracy on a sample of the MMLU test dataset of a fine tuned LLama with 1000 datapoints sampled from the Alpaca dataset using either Random sampling or CoreSet</i>
+    <i>Accuracy on a sample of the MMLU test dataset of a fine tuned LLama with 1000 datapoints sampled from the Alpaca dataset using either Random sampling or CoreSet.</i>
 </p>
 
 ## The idea
